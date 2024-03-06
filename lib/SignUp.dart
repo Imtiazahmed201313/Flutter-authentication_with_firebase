@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_test/LoginPage.dart';
 import 'package:flutter/material.dart';
 
@@ -9,41 +12,72 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+
+  TextEditingController emailEditing = TextEditingController();
+  TextEditingController passwordEditing = TextEditingController();
+  TextEditingController confirmPasswordEditing = TextEditingController();
+
+  Future<void> createAccount() async{
+    String email = emailEditing.text.trim();
+    String password = passwordEditing.text.trim();
+    String confirmPassword = confirmPasswordEditing.text.trim();
+
+    if (email == "" || password == "" || confirmPassword == "") {
+      log("Please fill all the details!");
+    } else if (password != confirmPassword) {
+      log("Password does not match");
+    } else {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email, password: password);
+      log("user created successfully");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Sign Up'),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25),
+              padding: EdgeInsets.only(left: 25, right: 25),
               child: TextField(
-                decoration: InputDecoration(
-                    hintText: "Email"
-                ),
+                controller: emailEditing,
+                decoration: InputDecoration(hintText: "Email"),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25),
+              padding: EdgeInsets.only(left: 25, right: 25),
               child: TextField(
-                decoration: InputDecoration(
-                    hintText: "Password"
-                ),
+                controller: passwordEditing,
+                decoration: InputDecoration(hintText: "Password"),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25),
+              padding: EdgeInsets.only(left: 25, right: 25),
               child: TextField(
-                decoration: InputDecoration(
-                  hintText: "Confirm Password"
-                ),
+                controller: confirmPasswordEditing,
+                decoration: InputDecoration(hintText: "Confirm Password"),
               ),
             ),
-            ElevatedButton(onPressed: () {}, child: Text('Sign Up')),
-            MaterialButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-            }, child: Text('Have an account? Click here'),)
+            const SizedBox(height: 20,),
+            ElevatedButton(onPressed: () {
+              createAccount();
+            }, child: const Text('Sign Up')),
+            MaterialButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginScreen()));
+              },
+              child: const Text('Have an account? Click here'),
+            )
           ],
         ),
       ),

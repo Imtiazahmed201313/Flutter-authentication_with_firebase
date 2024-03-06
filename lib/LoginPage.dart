@@ -12,30 +12,36 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Login'),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25),
+            const Padding(
+              padding: EdgeInsets.only(left: 25, right: 25),
               child: TextField(
                 decoration: InputDecoration(
                     hintText: "Email"
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25),
+            const Padding(
+              padding: EdgeInsets.only(left: 25, right: 25),
               child: TextField(
                 decoration: InputDecoration(
                     hintText: "Password"
                 ),
               ),
             ),
-            ElevatedButton(onPressed: () {}, child: Text('Sign In')),
+            const SizedBox(height: 20,),
+            ElevatedButton(onPressed: () {}, child: const Text('Log In')),
             MaterialButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
-            }, child: Text('don\'t have an account? Click here'),)
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUp()));
+            }, child: const Text('don\'t have an account? Click here'),)
           ],
         ),
       ),
