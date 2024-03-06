@@ -20,7 +20,10 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('this is a text'),
+        child: Text('Splash Screen', style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 30
+        ),),
       ),
     );
   }

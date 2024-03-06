@@ -7,6 +7,6 @@ import 'dart:html';
 
 class SplashScreen{
   void isLogin(BuildContext context){
-    Timer(Duration(seconds: 3), () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())));
+    Timer(Duration(seconds: 2), () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())));
   }
 }

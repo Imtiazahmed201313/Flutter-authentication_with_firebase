@@ -1,14 +1,14 @@
+import 'package:firebase_test/LoginPage.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_test/SignUp.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,10 +32,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            ElevatedButton(onPressed: () {}, child: Text('Sign In')),
+            Padding(
+              padding: const EdgeInsets.only(left: 25, right: 25),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "Confirm Password"
+                ),
+              ),
+            ),
+            ElevatedButton(onPressed: () {}, child: Text('Sign Up')),
             MaterialButton(onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
-            }, child: Text('don\'t have an account? Click here'),)
+              Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+            }, child: Text('Have an account? Click here'),)
           ],
         ),
       ),
