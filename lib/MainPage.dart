@@ -11,7 +11,9 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(),
+      body: Center(
+        child: Text('this is a text'),
+      ),
     );
   }
 }
