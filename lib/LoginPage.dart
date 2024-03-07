@@ -18,51 +18,132 @@ class _LoginScreenState extends State<LoginScreen> {
     UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim());
-    if(userCredential.user != null){
       Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
-    }
+
+  }
+
+  void navigate(){
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignUp()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 25, right: 25),
-              child: TextField(
-                controller: emailController,
-                decoration: InputDecoration(hintText: "Email"),
-              ),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.android_outlined,
+                  size: 80,
+                ),
+                const Text(
+                  'Hello!',
+                  style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                ),
+                const Text(
+                  'Welcome back, Guest!',
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+
+                // Email field
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextField(
+                        controller: emailController,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: 'Email'),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+
+                // Password field
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextField(
+                        controller: passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: 'Password'),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+
+                // Sign in button
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
+                  child: GestureDetector(
+                    onTap: signIn,
+                    child: Container(
+                      height: 70,
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                          color: Colors.deepPurple,
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Center(
+                          child: Text(
+                            'Sign In',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                 GestureDetector(
+                   onTap: navigate,
+                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Not a member?',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        ' Register now',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.blue),
+                      ),
+                    ],
+                                   ),
+                 )
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 25, right: 25),
-              child: TextField(
-                controller: passwordController,
-                decoration: InputDecoration(hintText: "Password"),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(onPressed: () {
-              signIn();
-            }, child: const Text('Log In')),
-            MaterialButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const SignUp()));
-              },
-              child: const Text('don\'t have an account? Click here'),
-            )
-          ],
+          ),
         ),
       ),
     );
