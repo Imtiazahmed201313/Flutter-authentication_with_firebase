@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_test/HomePage.dart';
 import 'package:firebase_test/LoginPage.dart';
@@ -13,13 +14,12 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  TextEditingController emailEditing = TextEditingController();
-  TextEditingController passwordEditing = TextEditingController();
-  TextEditingController confirmPasswordEditing = TextEditingController();
-  TextEditingController firstNameEditing = TextEditingController();
-  TextEditingController lastNameEditing = TextEditingController();
-  TextEditingController ageEditing = TextEditingController();
-
+  final emailEditing = TextEditingController();
+  final passwordEditing = TextEditingController();
+  final confirmPasswordEditing = TextEditingController();
+  final firstNameEditing = TextEditingController();
+  final lastNameEditing = TextEditingController();
+  final ageEditing = TextEditingController();
 
   Future<void> createAccount() async {
     String email = emailEditing.text.trim();
@@ -37,16 +37,45 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
+  // @override
+  // void initState() {
+  //   emailEditing.dispose();
+  //   passwordEditing.dispose();
+  //   firstNameEditing.dispose();
+  //   lastNameEditing.dispose();
+  //   ageEditing.dispose();
+  //   super.initState();
+  // }
+
   void _navigate() {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
   Future<void> SignUp() async {
-    UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
         email: emailEditing.text.trim(),
         password: passwordEditing.text.trim());
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
 
+    addUserDetails(firstNameEditing.text.trim(), lastNameEditing.text.trim(),
+        emailEditing.text.trim(), int.parse(ageEditing.text.trim()));
+
+
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => HomePage()));
+  }
+
+  Future addUserDetails(String firstName, String lastName, String email,
+      int age) async {
+    CollectionReference collecref = await FirebaseFirestore.instance.collection(
+        'users');
+    collecref.add({
+      'first name': firstName,
+      'last name': lastName,
+      'email': email,
+      'age': age,
+    });
   }
 
   @override
@@ -59,10 +88,6 @@ class _SignUpState extends State<SignUp> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.android_outlined,
-                  size: 80,
-                ),
                 const Text(
                   'Hello!',
                   style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
@@ -75,6 +100,75 @@ class _SignUpState extends State<SignUp> {
                 ),
                 const SizedBox(
                   height: 40,
+                ),
+
+                // First name
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextField(
+                        controller: firstNameEditing,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: 'First Name'),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+
+                //Last name
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextField(
+                        controller: lastNameEditing,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: 'Last Name'),
+                      ),
+                    ),
+                  ),
+
+                  // Age
+                ),
+
+                SizedBox(
+                  height: 20,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: TextField(
+                        controller: ageEditing,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: 'Age'),
+                      ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(
+                  height: 20,
                 ),
 
                 // Email field
@@ -157,12 +251,12 @@ class _SignUpState extends State<SignUp> {
                           borderRadius: BorderRadius.circular(12)),
                       child: Center(
                           child: Text(
-                        'Sign In',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      )),
+                            'Sign In',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )),
                     ),
                   ),
                 ),
